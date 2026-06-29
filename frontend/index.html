@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Argument Referee</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="badge">AI POWERED</div>
+    <h1>Argument <span class="accent">Referee</span></h1>
+    <p class="subtitle">Paste both sides. Get an honest verdict.</p>
+  </header>
+
+  <main>
+    <div class="arena">
+
+      <div class="side side--blue">
+        <label for="person1">🔵 Person 1</label>
+        <textarea id="person1" placeholder="State your side of the argument..."></textarea>
+      </div>
+
+      <div class="vs">VS</div>
+
+      <div class="side side--red">
+        <label for="person2">🔴 Person 2</label>
+        <textarea id="person2" placeholder="State your side of the argument..."></textarea>
+      </div>
+
+    </div>
+
+    <button id="judgeBtn" onclick="getVerdict()">
+      <span id="btnText">⚖️ Judge It</span>
+    </button>
+
+    <div id="result" class="result hidden">
+      <h2>🏆 Verdict</h2>
+      <div id="verdictText"></div>
+    </div>
+
+    <div id="error" class="error hidden"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
