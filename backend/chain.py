@@ -20,3 +20,11 @@ def get_verdict(person1: str, person2: str) -> str:
         "person1": person1,
         "person2": person2
     })
+
+
+def stream_verdict(person1: str, person2: str):
+    for chunk in referee_chain.stream({
+        "person1": person1,
+        "person2": person2
+    }):
+        yield chunk

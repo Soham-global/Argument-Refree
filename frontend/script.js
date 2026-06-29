@@ -16,12 +16,13 @@ async function getVerdict() {
   }
 
   // ── Loading state ───────────────────────────────────────────────
-  btn.disabled    = true;
-  btnText.textContent = "⏳ Judging...";
-  result.classList.add("hidden");
+  btn.disabled          = true;
+  btnText.textContent   = "⏳ Judging...";
+  verdict.textContent   = "";
+  result.classList.remove("hidden");
   error.classList.add("hidden");
 
-  // ── API Call ────────────────────────────────────────────────────
+  // ── Streaming API Call ──────────────────────────────────────────
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -29,18 +30,21 @@ async function getVerdict() {
       body: JSON.stringify({ person1, person2 }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
+
+    const reader  = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    // ── Read stream chunk by chunk ────────────────────────────
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      verdict.textContent += decoder.decode(value, { stream: true });
     }
-
-    const data = await response.json();
-
-    // ── Render verdict ──────────────────────────────────────────
-    verdict.textContent = data.verdict;
-    result.classList.remove("hidden");
 
   } catch (err) {
     showError(`Something went wrong: ${err.message}`);
+    result.classList.add("hidden");
   } finally {
     btn.disabled        = false;
     btnText.textContent = "⚖️ Judge It";

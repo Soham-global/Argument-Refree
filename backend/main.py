@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from backend.chain import get_verdict
+from backend.chain import stream_verdict
 
 app = FastAPI(
     title="Argument Referee API",
@@ -24,20 +25,17 @@ class ArgumentRequest(BaseModel):
     person2: str
 
 
-# Response model
-class VerdictResponse(BaseModel):
-    verdict: str
-
-
 @app.get("/")
 def root():
     return {"message": "Argument Referee API is running 🏆"}
 
 
-@app.post("/verdict", response_model=VerdictResponse)
+@app.post("/verdict")
 def get_argument_verdict(request: ArgumentRequest):
-    verdict = get_verdict(
-        person1=request.person1,
-        person2=request.person2
+    return StreamingResponse(
+        stream_verdict(
+            person1=request.person1,
+            person2=request.person2
+        ),
+        media_type="text/plain"
     )
-    return VerdictResponse(verdict=verdict)
