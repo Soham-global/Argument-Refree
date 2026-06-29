@@ -1,4 +1,4 @@
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 referee_prompt = PromptTemplate(
     input_variables=["person1", "person2"],

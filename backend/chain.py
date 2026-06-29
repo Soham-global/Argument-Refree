@@ -1,5 +1,5 @@
 from langchain_groq import ChatGroq
-from langchain.schema.output_parser import StrOutputParser
+from langchain_core.output_parsers import StrOutputParser
 from backend.config import GROQ_API_KEY, MODEL_NAME, TEMPERATURE, MAX_TOKENS
 from backend.prompt import referee_prompt
 
